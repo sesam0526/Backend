@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>메인화면</title>
+    </head>
+    <body>
+        {% for feed in feed_list %}
+        <!--자바스크립트 문법(for문) 중괄호 퍼센트 사용-->
+        <div>
+            <p>{{feed.content}}</p>
+            <!--views.py로 넘겨온 정보들은 중괄호 2개 사용해야 인식함-->
+            <p>{{feed.nickname}}</p>
+            <img src="{{feed.image}}" />
+            <p>{{feed.like_count}}</p>
+            <form action="{% url 'content:isGood' feed.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" name="isGood" value="좋아요">좋아요</button>
+                <button type="submit" name="isGood" value="싫어요">싫어요</button>
+            </form>
+            <p>생성된 날짜: {{feed.created_at}}</p>
+            <p>수정된 날짜: {{feed.updated_at}}</p>
+            <form action="{% url 'content:modify' feed.id %}" method="get">
+                <button type="submit">수정</button>
+            </form>
+            <form action="{% url 'content:delete' feed.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">삭제</button>
+            </form>
+        </div>
+        <hr />
+        {% endfor %}
+        <!--for문 닫음-->
+    </body>
+    <a href="{% url 'content:post' %}">글쓰기</a>
+    <!--a 태그는 get방식으로 감-->
+    <!--url 사용, content는 앱이름, post는 path이름(urls.py에서 설정)-->
+</html>

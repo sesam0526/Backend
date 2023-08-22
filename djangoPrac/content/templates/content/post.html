@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>글쓰기 페이지</title>
+    </head>
+    <body>
+        <form id="makefeed" name="makefeed" method="post" action="{% url 'content:post' %}">
+            <!--method가 get이었으면 데이터베이스에 저장이 되지 않음-->
+            {% csrf_token %} content
+            <input name="content" type="text" />
+            <!--value가 없어서 빈칸으로 나옴-->
+            nickname
+            <input name="nickname" type="text" />
+            imageURL
+            <input name="image" type="text" />
+            profileURL
+            <input name="profile" type="text" />
+            <input type="submit" value="확인" />
+        </form>
+        <!--백엔드로 통신보냄-->
+    </body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>수정 페이지</title>
+    </head>
+    <body>
+        <form method="post" action="{% url 'content:modify' feed.id %}">
+            {% csrf_token %} content
+            <!--접근 허용하기 위한 보안(접속한 사람의 토큰 대조, 토큰은 접속할 때마다 랜덤으로 생성됨)-->
+            <input name="content" type="text" value="{{feed.content}}" />
+            nickname
+            <input name="nickname" type="text" value="{{feed.nickname}}" />
+            imageURL
+            <input name="image" type="text" value="{{feed.image}}" />
+            profileURL
+            <input name="profile" type="text" value="{{feed.profile}}" />
+            <input type="submit" value="확인" />
+        </form>
+    </body>
+</html>
