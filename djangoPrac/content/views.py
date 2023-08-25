@@ -1,6 +1,7 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, resolve_url
 from rest_framework.views import APIView
 from .models import Feed
+from django.db.models import Count, Avg
 # Create your views here.
 
 class Main(APIView):  
@@ -74,4 +75,19 @@ def isGood(request, pk):
             feed.like_count = feed.like_count-1
             print('싫어요')
         feed.save()
-    return redirect('content:main')
+    # 좋아요 누르면 페이지가 제일 위로 가는 현상 막음, 해당 게시글이 위로가도록 함
+    return redirect('{}#feed_{}'.format(   # format 뒤의 인자 2개가 중괄호 안에 순서대로 들어감
+        resolve_url('content:main'), feed.id   # id일때는 #, class는 .을 줌
+    ))
+
+def test(request):
+    if request.method == 'POST':
+        #feed_list = Feed.objects.all()
+        feed_list = Feed.objects.filter(like_count__range=(1,4))   # 좋아요가 1~4개인 게시글 가져옴
+        #feed_list = Feed.objects.filter(like_count__gte=4, like_count__lt=8)  # 좋아요 수가 4이상 8미만인 게시글 가져옴
+        #result = Feed.objects.aggregate(result = Count('id'))   # result = Count('id')의 result는 집계속성 이름 재지정해준 것
+        result = Feed.objects.aggregate(result = Avg('like_count'))   # 모든 게시글의 좋아요 수 평균을 출력함
+        return render(request, "content/main.html", {
+            'feed_list':feed_list,
+            'r':result,
+        })

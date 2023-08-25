@@ -6,9 +6,19 @@
         <title>메인화면</title>
     </head>
     <body>
+        <form action="{% url 'content:test' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">테스트</button>
+        </form>
+        <div>
+            <strong>테스트 결과: {{r.result}}</strong>
+            <!--views.py의 def test의 r 테이블의 result 속성을 가져옴-->
+        </div>
         {% for feed in feed_list %}
         <!--자바스크립트 문법(for문) 중괄호 퍼센트 사용-->
         <div>
+            <a id="feed_{{ feed.id }}"></a>
+            <!--책갈피 같은 개념-->
             <p>{{feed.content}}</p>
             <!--views.py로 넘겨온 정보들은 중괄호 2개 사용해야 인식함-->
             <p>{{feed.nickname}}</p>
